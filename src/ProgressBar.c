@@ -1,0 +1,54 @@
+#include "ProgressBar.h"
+#include "GLCD.h"
+
+void print_progress_bar(const ProgressBar *bar) {
+    char a_page = bar->top_left_anchor.v_pages;
+    char a_px = bar->top_left_anchor.h_px;
+    char last_progress_px = a_px + bar->width - 2;
+
+    writeByte(a_page, a_px, 0xFF);
+    writeByte(a_page, a_px + 1, 0b10000001);
+    writeByte(a_page, last_progress_px, 0b10000001);
+    writeByte(a_page, last_progress_px + 1, 0xFF);
+    for (char j = a_px + 2; j < last_progress_px; ++j)
+        writeByte(a_page, j, 0b10000001);
+}
+
+void increase_progress_bar(ProgressBar *bar, char increase) {
+    char progress = bar->progress;
+    char max_progress = bar->width - 4;
+    char progress_px = bar->top_left_anchor.h_px + 2 + progress;
+    char a_page = bar->top_left_anchor.v_pages;
+
+    if (max_progress - progress <= increase) {
+        char max_progress_px = bar->top_left_anchor.h_px + 2 + max_progress;
+        for (char j = progress_px; j < max_progress_px; ++j)
+            writeByte(a_page, j, 0b10111101);
+        bar->progress = max_progress;
+    }
+    else {
+        char last_progress_px = progress_px + increase;
+        for (char j = progress_px; j < last_progress_px; ++j)
+            writeByte(a_page, j, 0b10111101);
+        bar->progress += increase;
+    }
+}
+
+void decrease_progress_bar(ProgressBar *bar, char decrease) {
+    char progress = bar->progress;
+    char first_px = bar->top_left_anchor.h_px + 1;
+    char progress_px = first_px + progress;
+    char a_page = bar->top_left_anchor.v_pages;
+
+    if (progress <= decrease) {
+        for (char j = progress_px; j > first_px; --j)
+            writeByte(a_page, j, 0b10000001);
+        bar->progress = 0;
+    }
+    else {
+        char new_progress_px = progress_px - decrease;
+        for (char j = progress_px; j > new_progress_px; --j)
+            writeByte(a_page, j, 0b10000001);
+        bar->progress -= decrease;
+    }
+}

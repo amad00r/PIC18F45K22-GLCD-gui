@@ -1,0 +1,24 @@
+#ifndef GUI_TEXT_H_
+#define GUI_TEXT_H_
+
+#include "GLCDUnits.h"
+
+#define TEXT(page_anchor, col_anchor, text, text_size) { { page_anchor, col_anchor }, text, text_size }
+#define MAX_CHARS_PER_ROW_PLUS_NULL 26
+
+typedef struct {
+    GLCDUnits top_left_anchor;
+    char text[MAX_CHARS_PER_ROW_PLUS_NULL];
+    char length;
+} Text;
+
+typedef enum {
+    WHITE,
+    BLACK
+} TextColor;
+
+void print_text(const Text *t, TextColor color);
+void clear_text(const Text *t, TextColor color);
+void change_text(Text *t, const char *new_text, char new_text_size);
+
+#endif
