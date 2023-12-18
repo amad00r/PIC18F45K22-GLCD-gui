@@ -27,7 +27,7 @@ void print_text(const Text *t, TextColor color) {
 void clear_text(const Text *t, TextColor color) {
     char bytedata = (color == BLACK ? 0 : 0xFF);
     char a_px = t->top_left_anchor.h_px;
-    char text_end_px = t->length*5 + a_px - 1;
+    char text_end_px = t->length*5 + a_px;
     char a_page = t->top_left_anchor.v_pages;
 
     for (char j = a_px; j < text_end_px; ++j)
