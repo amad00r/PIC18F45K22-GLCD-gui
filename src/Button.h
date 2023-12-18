@@ -21,7 +21,7 @@ typedef struct {
     enum { UNPRESSED, PRESSED } state;
 } Button;
 
-void print_button(const Button *b);
-void toggle_button_highlight(Button *b);
+void button_print(const Button *b);
+void button_toggle(Button *b);
 
 #endif

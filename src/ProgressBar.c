@@ -1,7 +1,7 @@
 #include "ProgressBar.h"
 #include "GLCD.h"
 
-void print_progress_bar(const ProgressBar *bar) {
+void bar_print(const ProgressBar *bar) {
     char a_page = bar->top_left_anchor.v_pages;
     char a_px = bar->top_left_anchor.h_px;
     char last_progress_px = a_px + bar->width - 2;
@@ -14,7 +14,7 @@ void print_progress_bar(const ProgressBar *bar) {
         writeByte(a_page, j, 0b10000001);
 }
 
-void increase_progress_bar(ProgressBar *bar, char increase) {
+void bar_increase(ProgressBar *bar, char increase) {
     char progress = bar->progress;
     char max_progress = bar->width - 4;
     char progress_px = bar->top_left_anchor.h_px + 2 + progress;
@@ -34,7 +34,7 @@ void increase_progress_bar(ProgressBar *bar, char increase) {
     }
 }
 
-void decrease_progress_bar(ProgressBar *bar, char decrease) {
+void bar_decrease(ProgressBar *bar, char decrease) {
     char progress = bar->progress;
     char first_px = bar->top_left_anchor.h_px + 1;
     char progress_px = first_px + progress;

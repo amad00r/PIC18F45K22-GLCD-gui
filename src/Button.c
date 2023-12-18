@@ -1,7 +1,7 @@
 #include "GLCD.h"
 #include "Button.h"
 
-void print_button(const Button *b) {
+void button_print(const Button *b) {
     char pages = b->size.v_pages;
     char px = b->size.h_px;
     char a_page = b->top_left_anchor.v_pages;
@@ -9,7 +9,7 @@ void print_button(const Button *b) {
     char a_page_lowest_vpx = a_page<<3;
     char hline_px_end = a_px + px - 1;
 
-    print_text(&b->text, BLACK);
+    text_print(&b->text, BLACK);
 
     if (b->size.v_pages == 1) {
         char a_page_highest_vpx = a_page_lowest_vpx + 7;
@@ -35,7 +35,7 @@ void print_button(const Button *b) {
     }
 }
 
-void toggle_button_highlight(Button *b) {
+void button_toggle(Button *b) {
     b->state = !b->state;
 
     char pages = b->size.v_pages;
@@ -57,8 +57,7 @@ void toggle_button_highlight(Button *b) {
  
         for (char j = highlight_px_start; j < text_px; ++j)
             writeByte(a_page, j, top_bottom_bytedata);
-        for (char j = text_px; j < text_end; ++j)
-            writeByte(a_page, j, (~readByte(a_page, j) & 0b00111100) | 0b10000001);
+        text_print(&b->text, b->state ? WHITE : BLACK);
         for (char j = text_end; j < highlight_px_end; ++j)
             writeByte(a_page, j, top_bottom_bytedata);
     }
@@ -70,8 +69,7 @@ void toggle_button_highlight(Button *b) {
             writeByte(a_page, j, top_bytedata);
         for (char j = highlight_px_start; j < text_px; ++j)
             writeByte(text_page, j, bottom_bytedata);
-        for (char j = text_px; j < text_end; ++j)
-            writeByte(text_page, j, (~readByte(text_page, j) & 0b00111111) | 0b10000000);
+        text_print(&b->text, b->state ? WHITE : BLACK);
         for (char j = text_end; j < highlight_px_end; ++j)
             writeByte(text_page, j, bottom_bytedata);
     }
@@ -91,7 +89,7 @@ void toggle_button_highlight(Button *b) {
 
         for (char j = highlight_px_start; j < text_px; ++j)
             writeByte(text_page, j, bytedata);
-        print_text(&b->text, (b->state ? WHITE : BLACK));
+        text_print(&b->text, (b->state ? WHITE : BLACK));
         for (char j = text_end; j < highlight_px_end; ++j)
             writeByte(text_page, j, bytedata);
     }

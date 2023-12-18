@@ -17,8 +17,8 @@ typedef enum {
     BLACK
 } TextColor;
 
-void print_text(const Text *t, TextColor color);
-void clear_text(const Text *t, TextColor color);
-void change_text(Text *t, const char *new_text, char new_text_size);
+void text_print(const Text *t, TextColor color);
+void text_clear(const Text *t, TextColor color);
+void text_change(Text *t, const char *new_text, char new_text_size);
 
 #endif

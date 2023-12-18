@@ -11,8 +11,8 @@ typedef struct {
     char progress;
 } ProgressBar;
 
-void print_progress_bar(const ProgressBar *bar);
-void increase_progress_bar(ProgressBar *bar, char increase);
-void decrease_progress_bar(ProgressBar *bar, char decrease);
+void bar_print(const ProgressBar *bar);
+void bar_increase(ProgressBar *bar, char increase);
+void bar_decrease(ProgressBar *bar, char decrease);
 
 #endif

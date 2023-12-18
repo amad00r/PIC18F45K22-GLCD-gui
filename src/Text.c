@@ -20,11 +20,11 @@ void writestring(char page, char y, const char *s, char length, TextColor color)
     }
 }
 
-void print_text(const Text *t, TextColor color) {
+void text_print(const Text *t, TextColor color) {
     writestring(t->top_left_anchor.v_pages, t->top_left_anchor.h_px, t->text, t->length, color);
 }
 
-void clear_text(const Text *t, TextColor color) {
+void text_clear(const Text *t, TextColor color) {
     char bytedata = (color == BLACK ? 0 : 0xFF);
     char a_px = t->top_left_anchor.h_px;
     char text_end_px = t->length*5 + a_px;
@@ -34,7 +34,7 @@ void clear_text(const Text *t, TextColor color) {
         writeByte(a_page, j, bytedata);
 }
 
-void change_text(Text *t, const char *new_text, char new_text_size) {
+void text_change(Text *t, const char *new_text, char new_text_size) {
     t->length = new_text_size;
     memcpy(t->text, new_text, new_text_size);
 }
