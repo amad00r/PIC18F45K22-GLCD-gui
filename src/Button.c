@@ -25,8 +25,8 @@ void print_button(const Button *b) {
         char last_page_highest_vpx = ((a_page + pages - 1)<<3) + 7;
 
         for (char i = a_page; i < a_page + pages; ++i) {
-            writeByte(i, a_px, 0b11111111);
-            writeByte(i, hline_px_end, 0b11111111);
+            writeByte(i, a_px, 0xFF);
+            writeByte(i, hline_px_end, 0xFF);
         }
         for (int j = a_px + 1; j < hline_px_end; ++j) {
             SetDot(a_page_lowest_vpx, j);
@@ -35,7 +35,9 @@ void print_button(const Button *b) {
     }
 }
 
-void toggle_button_highlight(const Button *b, Edge edge) {
+void toggle_button_highlight(Button *b) {
+    b->state = !b->state;
+
     char pages = b->size.v_pages;
     char px = b->size.h_px;
     char a_page = b->top_left_anchor.v_pages;
@@ -48,7 +50,7 @@ void toggle_button_highlight(const Button *b, Edge edge) {
     char highlight_px_start = a_px + 2;
     char highlight_px_end = a_px + px - 2;
 
-    char bytedata = (edge == RISING ? 0xFF : 0);
+    char bytedata = (b->state ? 0xFF : 0);
    
     if (pages == 1) {
         char top_bottom_bytedata = (bytedata & 0b00111100) | 0b10000001;
@@ -89,7 +91,7 @@ void toggle_button_highlight(const Button *b, Edge edge) {
 
         for (char j = highlight_px_start; j < text_px; ++j)
             writeByte(text_page, j, bytedata);
-        print_text(&b->text, (edge == RISING ? WHITE : BLACK));
+        print_text(&b->text, (b->state ? WHITE : BLACK));
         for (char j = text_end; j < highlight_px_end; ++j)
             writeByte(text_page, j, bytedata);
     }
