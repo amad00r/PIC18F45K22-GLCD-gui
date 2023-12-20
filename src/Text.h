@@ -4,11 +4,11 @@
 #include "GLCDUnits.h"
 
 #define TEXT(page_anchor, col_anchor, text, text_size) { { page_anchor, col_anchor }, text, text_size }
-#define MAX_CHARS_PER_ROW_PLUS_NULL 26
+#define MAX_CHARS_PER_ROW 25
 
 typedef struct {
     GLCDUnits top_left_anchor;
-    char text[MAX_CHARS_PER_ROW_PLUS_NULL];
+    char text[MAX_CHARS_PER_ROW];
     char length;
 } Text;
 
