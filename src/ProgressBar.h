@@ -12,7 +12,7 @@ typedef struct {
 } ProgressBar;
 
 void bar_print(const ProgressBar *bar);
-void bar_increase(ProgressBar *bar, char increase);
-void bar_decrease(ProgressBar *bar, char decrease);
+char bar_increase(ProgressBar *bar, char increase);
+char bar_decrease(ProgressBar *bar, char decrease);
 
 #endif

@@ -14,11 +14,13 @@ void bar_print(const ProgressBar *bar) {
         writeByte(a_page, j, 0b10000001);
 }
 
-void bar_increase(ProgressBar *bar, char increase) {
+char bar_increase(ProgressBar *bar, char increase) {
     char progress = bar->progress;
     char max_progress = bar->width - 4;
     char progress_px = bar->top_left_anchor.h_px + 2 + progress;
     char a_page = bar->top_left_anchor.v_pages;
+
+    if (progress == max_progress) return 0;
 
     if (max_progress - progress <= increase) {
         char max_progress_px = bar->top_left_anchor.h_px + 2 + max_progress;
@@ -32,13 +34,17 @@ void bar_increase(ProgressBar *bar, char increase) {
             writeByte(a_page, j, 0b10111101);
         bar->progress += increase;
     }
+
+    return 1;
 }
 
-void bar_decrease(ProgressBar *bar, char decrease) {
+char bar_decrease(ProgressBar *bar, char decrease) {
     char progress = bar->progress;
     char first_px = bar->top_left_anchor.h_px + 1;
     char progress_px = first_px + progress;
     char a_page = bar->top_left_anchor.v_pages;
+
+    if (progress == 0) return 0;
 
     if (progress <= decrease) {
         for (char j = progress_px; j > first_px; --j)
@@ -51,4 +57,6 @@ void bar_decrease(ProgressBar *bar, char decrease) {
             writeByte(a_page, j, 0b10000001);
         bar->progress -= decrease;
     }
+
+    return 1;
 }
